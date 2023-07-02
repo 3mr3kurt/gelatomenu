@@ -1,1 +1,1 @@
-# gelatomenu
+# This is the menu for the il labatorio del gelato stores. It is a live view of the rotating flavors currently in the case. The web app is then displayed on a screen in the store. It is meant to mitigate wait times and allow for convenince of service. Currently, it runs only locally on the machine, but there are future plans to deploy the site where it can be accessed by anyone, anytime. 
