@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Gelato Store Admin</title>
-  <link rel="stylesheet" href="https://use.typekit.net/iey0snc.css">
-  <link rel="stylesheet" type="text/css" href="styles.css">
+<title>Gelato Store Admin</title>
+<link rel="stylesheet" href="https://use.typekit.net/iey0snc.css">
+<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-  <div id="auth-section">
-    <input type="password" id="auth-code" placeholder="Enter access code">
-    <button id="auth-submit">Submit</button>
-  </div>
-  <div id="admin-panel" style="display: none;">
-    <h1>Admin: Manage Flavors</h1>
-    <div id="flavor-input-section">
-      <input id="flavor-input" type="text" placeholder="Enter flavor name" list="flavor-list" autocomplete="off" />
-      <datalist id="flavor-list"></datalist>
-    </div>
-    <div id="icecream-menu"></div>
-  </div>
-  <script src="admin.js"></script>
+<div id="auth-section">
+<input type="password" id="auth-code" placeholder="Enter access code">
+<button id="auth-submit">Submit</button>
+</div>
+<div id="admin-panel" style="display: none;">
+<h1>Admin: Manage Flavors</h1>
+<div id="flavor-input-section">
+<input id="flavor-input" type="text" placeholder="Enter flavor name" list="flavor-list" autocomplete="off" />
+<button id="flavor-submit">Add/Remove Flavor</button>
+<datalist id="flavor-list"></datalist>
+</div>
+<div id="icecream-menu"></div>
+</div>
+<script src="admin.js"></script>
 </body>
 </html>

@@ -1,11 +1,12 @@
 let isAuthenticated = false;
-const ACCESS_CODE = '1234'; // Replace with your desired access code
+const ACCESS_CODE = 'gelateriaLES25';
 
 document.addEventListener('DOMContentLoaded', function() {
     const authSection = document.getElementById('auth-section');
     const adminPanel = document.getElementById('admin-panel');
     const authSubmit = document.getElementById('auth-submit');
     const flavorInput = document.getElementById('flavor-input');
+    const flavorSubmit = document.getElementById('flavor-submit');
 
     authSubmit.addEventListener('click', function() {
         const authCode = document.getElementById('auth-code').value;
@@ -22,13 +23,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     flavorInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter' && isAuthenticated) {
-            const flavorName = flavorInput.value.trim().toLowerCase();
-            if (flavorName) {
-                toggleFlavor(flavorName);
-            }
-            flavorInput.value = ''; // clear the input field
+            handleFlavorSubmission();
         }
     });
+
+    flavorSubmit.addEventListener('click', function() {
+        if (isAuthenticated) {
+            handleFlavorSubmission();
+        }
+    });
+
+    function handleFlavorSubmission() {
+        const flavorName = flavorInput.value.trim().toLowerCase();
+        if (flavorName) {
+            toggleFlavor(flavorName);
+        }
+        flavorInput.value = ''; // clear the input field
+    }
 });
 
 function loadFlavorOptions() {
@@ -54,16 +65,16 @@ function toggleFlavor(flavorName) {
         },
         body: JSON.stringify({ flavor: flavorName }),
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            loadCurrentFlavors();
-            alert(`Flavor ${data.action}`);
-        } else {
-            alert(data.message);
-        }
-    })
-    .catch(err => console.error(err));
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadCurrentFlavors();
+                alert(`Flavor ${data.action}`);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(err => console.error(err));
 }
 
 function loadCurrentFlavors() {
@@ -71,7 +82,7 @@ function loadCurrentFlavors() {
         .then(response => response.json())
         .then(flavors => {
             const menu = document.getElementById('icecream-menu');
-            menu.innerHTML = ''; // Clear current flavors
+            menu.innerHTML = '';
             flavors.forEach(flavor => {
                 const flavorElement = createFlavorElement(flavor);
                 menu.appendChild(flavorElement);
