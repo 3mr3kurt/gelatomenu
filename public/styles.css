@@ -82,3 +82,55 @@ h1 {
     object-fit: cover;
     object-position: center;
 }
+
+.menu-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+}
+
+.controls-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.page-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.indicator-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+    transition: background-color 0.3s ease;
+}
+
+.indicator-dot.active {
+    background-color: #00acef;
+}
+
+.progress-bar {
+    width: 200px;
+    height: 4px;
+    background-color: #ccc;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress {
+    width: 100%;
+    height: 100%;
+    background-color: #00acef;
+    transition: width 100ms linear;
+}
