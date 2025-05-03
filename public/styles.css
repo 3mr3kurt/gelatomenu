@@ -4,22 +4,26 @@ body {
     font-style: normal;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    background-color: #00acef;
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
     width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    box-sizing: border-box;
 }
 
 h1 {
     background-color: #00acef;
     color: #fff;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
     margin: 0;
     width: 100%;
     box-sizing: border-box;
+    font-size: 1.5rem;
 }
 
 #auth-section {
@@ -33,12 +37,14 @@ h1 {
 
 #admin-panel {
     width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#auth-code, #flavor-input {
+#auth-code,
+#flavor-input {
     padding: 10px;
     font-size: 16px;
     margin-bottom: 10px;
@@ -55,25 +61,43 @@ h1 {
 }
 
 #flavor-input-section {
-    margin: 20px 0;
+    margin: 10px 0;
     text-align: center;
 }
 
 #icecream-menu {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    grid-template-columns: repeat(8, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 8px;
+    padding: 14px;
     width: 100%;
-    max-width: 1200px;
+    max-width: 100%;
     box-sizing: border-box;
+    flex: 1;
+    align-self: stretch;
+    overflow-y: auto;
+    min-height: 0;
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
+    align-content: start;
 }
 
 #icecream-menu div {
-    aspect-ratio: 1386 / 1196;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    transition: transform 0.2s ease;
+}
+
+#icecream-menu div:hover {
+    transform: scale(1.02);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 #icecream-menu div img {
@@ -83,54 +107,18 @@ h1 {
     object-position: center;
 }
 
-.menu-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    width: 100%;
-    max-width: 1200px;
-    box-sizing: border-box;
+/* Media query for larger screens */
+@media screen and (min-width: 1400px) {
+    #icecream-menu {
+        grid-template-columns: repeat(12, 1fr);
+    }
 }
 
-.controls-container {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-}
-
-.page-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-.indicator-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #ccc;
-    transition: background-color 0.3s ease;
-}
-
-.indicator-dot.active {
-    background-color: #00acef;
-}
-
-.progress-bar {
-    width: 200px;
-    height: 4px;
-    background-color: #ccc;
-    border-radius: 2px;
-    overflow: hidden;
-}
-
-.progress {
-    width: 100%;
-    height: 100%;
-    background-color: #00acef;
-    transition: width 100ms linear;
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    #icecream-menu {
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+        padding: 8px;
+    }
 }
