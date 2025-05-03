@@ -1,5 +1,5 @@
 let isAuthenticated = false;
-const ACCESS_CODE = '12345';
+const ACCESS_CODE = 'gelatolabLES25';
 
 document.addEventListener('DOMContentLoaded', function() {
     const authSection = document.getElementById('auth-section');
