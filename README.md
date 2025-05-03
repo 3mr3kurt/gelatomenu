@@ -1,1 +1,1 @@
-# This is the menu for the il laboratorio del gelato stores. It is a live view of the rotating flavors currently in the case. The web app is then displayed on a screen in the store. It is meant to mitigate wait times and allow for convenince of service.
+# This is the menu for the il laboratorio del gelato stores. It is a live view of the rotating flavors currently in the case. The web app is then displayed on a screen in the store. It is meant to mitigate wait times and allow for convenince of service. <3
