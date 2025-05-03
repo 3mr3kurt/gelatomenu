@@ -54,7 +54,7 @@ h1 {
 #auth-submit {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #00acef;
+    background-color: #606060;
     color: white;
     border: none;
     cursor: pointer;
@@ -69,8 +69,8 @@ h1 {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-auto-rows: 1fr;
-    gap: 8px;
-    padding: 14px;
+    gap: 4px 8px;
+    padding: 10px;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
@@ -93,6 +93,10 @@ h1 {
     flex-direction: column;
     min-width: 0;
     transition: transform 0.2s ease;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    box-sizing: border-box;
+    padding: 2px;
 }
 
 #icecream-menu div:hover {
@@ -118,7 +122,7 @@ h1 {
 @media screen and (max-width: 768px) {
     #icecream-menu {
         grid-template-columns: repeat(6, 1fr);
-        gap: 8px;
-        padding: 8px;
+        gap: 3px 6px;
+        padding: 6px;
     }
 }
