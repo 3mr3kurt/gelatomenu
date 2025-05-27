@@ -1,5 +1,5 @@
 let isAuthenticated = false;
-const ACCESS_CODE = process.env.ACCESS_CODE;
+const ACCESS_CODE = env.ACCESS_CODE;
 
 document.addEventListener('DOMContentLoaded', function() {
     const authSection = document.getElementById('auth-section');
