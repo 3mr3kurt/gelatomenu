@@ -1,1 +1,6 @@
-runtime: nodejs16
+runtime: nodejs20
+
+env_variables:
+  # Add your Neon connection string here
+  DATABASE_URL: ${DATABASE_URL}
+  ACCESS_CODE: ${ACCESS_CODE}

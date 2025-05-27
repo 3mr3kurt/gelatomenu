@@ -1,3 +1,5 @@
 /node_modules
 /sshkeys
-/sshkeys.pub
+/sshkeys.pub.env
+/.env
+.env
