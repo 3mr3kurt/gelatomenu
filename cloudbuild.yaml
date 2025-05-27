@@ -34,6 +34,10 @@ steps:
       - "--set-env-vars"
       - "DATABASE_URL=${_DATABASE_URL},NODE_ENV=production"
 
+# Configure logging to use Cloud Logging only
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 # Store images in Artifact Registry
 images:
   - "us-east1-docker.pkg.dev/$PROJECT_ID/gelato-menu/cloud-run-source-deploy:$COMMIT_SHA"
