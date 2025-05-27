@@ -2,14 +2,9 @@ const { Pool } = require("pg");
 
 // Create a connection pool using the Neon connection string
 const pool = new Pool({
-  connectionString:
-    process.env.DATABASE_URL ||
-    "postgresql://user:password@localhost:5432/gelato_db",
-  ssl:
-    process.env.NODE_ENV === "production"
-      ? { rejectUnauthorized: false }
-      : false,
-});
+    connectionString: process.env.DATABASE_URL || "postgresql://user:password@localhost:5432/gelato_db",
+    ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  });
 
 // Log connection status
 pool.on("connect", () => {
