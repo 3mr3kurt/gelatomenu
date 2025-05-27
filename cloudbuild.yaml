@@ -1,0 +1,43 @@
+steps:
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "us-east1-docker.pkg.dev/$PROJECT_ID/gelato-menu/cloud-run-source-deploy:$COMMIT_SHA",
+        ".",
+      ]
+
+  # Push the container image to Artifact Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "us-east1-docker.pkg.dev/$PROJECT_ID/gelato-menu/cloud-run-source-deploy:$COMMIT_SHA",
+      ]
+
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      - "run"
+      - "deploy"
+      - "gelatolabmenu"
+      - "--image"
+      - "us-east1-docker.pkg.dev/$PROJECT_ID/gelato-menu/cloud-run-source-deploy:$COMMIT_SHA"
+      - "--region"
+      - "us-east1"
+      - "--platform"
+      - "managed"
+      - "--allow-unauthenticated"
+      - "--set-env-vars"
+      - "DATABASE_URL=${_DATABASE_URL},NODE_ENV=production"
+
+# Store images in Artifact Registry
+images:
+  - "us-east1-docker.pkg.dev/$PROJECT_ID/gelato-menu/cloud-run-source-deploy:$COMMIT_SHA"
+
+# Substitute your DATABASE_URL here
+substitutions:
+  _DATABASE_URL: ${DATABASE_URL}
