@@ -67,6 +67,18 @@ app.post("/flavors", async (req, res) => {
   }
 });
 
+// Add endpoint to verify access code
+app.post("/admin/verify", (req, res) => {
+  const { code } = req.body;
+  const ACCESS_CODE = process.env.ACCESS_CODE;
+
+  if (code === ACCESS_CODE) {
+    res.json({ success: true, message: "Access granted" });
+  } else {
+    res.json({ success: false, message: "Invalid access code" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
