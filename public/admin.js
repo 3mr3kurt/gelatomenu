@@ -19,6 +19,11 @@ document.addEventListener("DOMContentLoaded", function () {
       handleFlavorSubmission();
     }
   });
+  flavorInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && isAuthenticated) {
+      handleFlavorSubmission();
+    }
+  });
 
   flavorSubmit.addEventListener("click", function () {
     if (isAuthenticated) {
@@ -67,9 +72,38 @@ function loadFlavorOptions() {
       });
     })
     .catch((err) => console.error(err));
+  fetch("/flavors/all")
+    .then((response) => response.json())
+    .then((flavors) => {
+      const datalist = document.getElementById("flavor-list");
+      datalist.innerHTML = ""; // Clear existing options
+      flavors.forEach((flavor) => {
+        const option = document.createElement("option");
+        option.value = flavor;
+        datalist.appendChild(option);
+      });
+    })
+    .catch((err) => console.error(err));
 }
 
 function toggleFlavor(flavorName) {
+  fetch("/flavors", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ flavor: flavorName }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        loadCurrentFlavors();
+        alert(`Flavor ${data.action}`);
+      } else {
+        alert(data.message);
+      }
+    })
+    .catch((err) => console.error(err));
   fetch("/flavors", {
     method: "POST",
     headers: {
@@ -101,9 +135,26 @@ function loadCurrentFlavors() {
       });
     })
     .catch((err) => console.error(err));
+  fetch("/flavors")
+    .then((response) => response.json())
+    .then((flavors) => {
+      const menu = document.getElementById("icecream-menu");
+      menu.innerHTML = "";
+      flavors.forEach((flavor) => {
+        const flavorElement = createFlavorElement(flavor);
+        menu.appendChild(flavorElement);
+      });
+    })
+    .catch((err) => console.error(err));
 }
 
 function createFlavorElement(flavor) {
+  const flavorElement = document.createElement("div");
+  const imgElement = document.createElement("img");
+  imgElement.src = flavor.image;
+  imgElement.alt = flavor.name;
+  flavorElement.appendChild(imgElement);
+  return flavorElement;
   const flavorElement = document.createElement("div");
   const imgElement = document.createElement("img");
   imgElement.src = flavor.image;
