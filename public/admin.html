@@ -7,22 +7,24 @@
 </head>
 <body>
 <div id="auth-section">
-<input type="password" id="auth-code" placeholder="Enter access code">
-<button id="auth-submit">Submit</button>
+  <h1>Admin Access</h1>
+  <input type="password" id="auth-code" placeholder="Enter access code">
+  <button id="auth-submit">Submit</button>
 </div>
 <div id="admin-panel" style="display: none;">
-<h1>Admin: Manage Flavors</h1>
-<div id="title-section">
-<h2>Page Title</h2>
-<input id="title-input" type="text" placeholder="Enter page title" />
-<button id="title-submit">Update Title</button>
-</div>
-<div id="flavor-input-section">
-<input id="flavor-input" type="text" placeholder="Enter flavor name" list="flavor-list" autocomplete="off" />
-<button id="flavor-submit">Add/Remove Flavor</button>
-<datalist id="flavor-list"></datalist>
-</div>
-<div id="icecream-menu"></div>
+  <h1>Admin: Manage Flavors</h1>
+  <div id="title-section">
+    <h2>Page Title</h2>
+    <input id="title-input" type="text" placeholder="Enter page title" />
+    <button id="title-submit">Update Title</button>
+  </div>
+  <div id="flavor-input-section">
+    <h2>Manage Flavors</h2>
+    <input id="flavor-input" type="text" placeholder="Enter flavor name" list="flavor-list" autocomplete="off" />
+    <button id="flavor-submit">Add/Remove Flavor</button>
+    <datalist id="flavor-list"></datalist>
+  </div>
+  <div id="icecream-menu"></div>
 </div>
 <script src="admin.js"></script>
 </body>
