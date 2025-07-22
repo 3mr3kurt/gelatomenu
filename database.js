@@ -42,6 +42,22 @@ async function initializeDatabase() {
         image VARCHAR(255)
       )
     `);
+    
+    // Create title table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS gelato_schema.page_title (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL DEFAULT 'Current Flavors'
+      )
+    `);
+    
+    // Insert default title if table is empty
+    await client.query(`
+      INSERT INTO gelato_schema.page_title (title) 
+      SELECT 'Current Flavors' 
+      WHERE NOT EXISTS (SELECT 1 FROM gelato_schema.page_title)
+    `);
+    
     console.log("Database tables initialized in custom schema");
   } catch (error) {
     console.error("Error creating database tables:", error);
@@ -58,6 +74,22 @@ async function initializeDatabase() {
           image VARCHAR(255)
         )
       `);
+      
+      // Create title table in public schema
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS page_title (
+          id SERIAL PRIMARY KEY,
+          title VARCHAR(255) NOT NULL DEFAULT 'Current Flavors'
+        )
+      `);
+      
+      // Insert default title if table is empty
+      await client.query(`
+        INSERT INTO page_title (title) 
+        SELECT 'Current Flavors' 
+        WHERE NOT EXISTS (SELECT 1 FROM page_title)
+      `);
+      
       console.log("Database tables initialized in public schema");
     } catch (fallbackError) {
       console.error("Error in fallback attempt:", fallbackError);
@@ -174,6 +206,58 @@ async function flavorExists(flavor) {
   }
 }
 
+// Get the current page title
+async function getPageTitle() {
+  const client = await pool.connect();
+  try {
+    // Try the custom schema first
+    try {
+      const result = await client.query(
+        "SELECT title FROM gelato_schema.page_title ORDER BY id LIMIT 1"
+      );
+      return result.rows[0]?.title || "Current Flavors";
+    } catch (error) {
+      console.log("Falling back to public schema for title query");
+      const result = await client.query(
+        "SELECT title FROM page_title ORDER BY id LIMIT 1"
+      );
+      return result.rows[0]?.title || "Current Flavors";
+    }
+  } catch (error) {
+    console.error("Error getting page title:", error);
+    return "Current Flavors";
+  } finally {
+    client.release();
+  }
+}
+
+// Update the page title
+async function updatePageTitle(newTitle) {
+  const client = await pool.connect();
+  try {
+    // Try the custom schema first
+    try {
+      const result = await client.query(
+        "UPDATE gelato_schema.page_title SET title = $1 WHERE id = (SELECT id FROM gelato_schema.page_title ORDER BY id LIMIT 1)",
+        [newTitle]
+      );
+      return { success: true, title: newTitle };
+    } catch (error) {
+      console.log("Falling back to public schema for title update");
+      const result = await client.query(
+        "UPDATE page_title SET title = $1 WHERE id = (SELECT id FROM page_title ORDER BY id LIMIT 1)",
+        [newTitle]
+      );
+      return { success: true, title: newTitle };
+    }
+  } catch (error) {
+    console.error("Error updating page title:", error);
+    throw error;
+  } finally {
+    client.release();
+  }
+}
+
 // Initialize the database on startup
 initializeDatabase().catch(console.error);
 
@@ -182,4 +266,6 @@ module.exports = {
   addFlavor,
   removeFlavor,
   flavorExists,
+  getPageTitle,
+  updatePageTitle,
 };

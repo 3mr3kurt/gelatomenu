@@ -40,6 +40,41 @@ app.get("/flavors/all", (req, res) => {
   res.json(Object.keys(allFlavors));
 });
 
+app.get("/title", async (req, res) => {
+  try {
+    const title = await db.getPageTitle();
+    res.json({ title });
+  } catch (err) {
+    console.error("Error fetching title:", err);
+    res.status(500).json({ title: "Current Flavors" });
+  }
+});
+
+app.post("/title", async (req, res) => {
+  const { title } = req.body;
+  if (title && title.trim()) {
+    try {
+      const result = await db.updatePageTitle(title.trim());
+      res.json(result);
+    } catch (err) {
+      console.error("Error updating title:", err);
+      res.status(500).json({ success: false, message: "Error updating title" });
+    }
+  } else {
+    res.status(400).json({ success: false, message: "Title cannot be empty" });
+  }
+});
+
+app.post("/auth", (req, res) => {
+  const { accessCode } = req.body;
+  const correctCode = process.env.ACCESS_CODE;
+  if (accessCode === correctCode) {
+    res.json({ success: true, message: "Authentication successful" });
+  } else {
+    res.status(401).json({ success: false, message: "Incorrect access code" });
+  }
+});
+
 app.post("/flavors", async (req, res) => {
   const { flavor } = req.body;
   if (allFlavors[flavor]) {
