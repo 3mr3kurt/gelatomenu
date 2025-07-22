@@ -19,11 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
       handleFlavorSubmission();
     }
   });
-  flavorInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter" && isAuthenticated) {
-      handleFlavorSubmission();
-    }
-  });
 
   flavorSubmit.addEventListener("click", function () {
     if (isAuthenticated) {
@@ -60,18 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function loadFlavorOptions() {
-  fetch("/flavors/all")
-    .then((response) => response.json())
-    .then((flavors) => {
-      const datalist = document.getElementById("flavor-list");
-      datalist.innerHTML = ""; // Clear existing options
-      flavors.forEach((flavor) => {
-        const option = document.createElement("option");
-        option.value = flavor;
-        datalist.appendChild(option);
-      });
-    })
-    .catch((err) => console.error(err));
   fetch("/flavors/all")
     .then((response) => response.json())
     .then((flavors) => {
@@ -135,26 +118,9 @@ function loadCurrentFlavors() {
       });
     })
     .catch((err) => console.error(err));
-  fetch("/flavors")
-    .then((response) => response.json())
-    .then((flavors) => {
-      const menu = document.getElementById("icecream-menu");
-      menu.innerHTML = "";
-      flavors.forEach((flavor) => {
-        const flavorElement = createFlavorElement(flavor);
-        menu.appendChild(flavorElement);
-      });
-    })
-    .catch((err) => console.error(err));
 }
 
 function createFlavorElement(flavor) {
-  const flavorElement = document.createElement("div");
-  const imgElement = document.createElement("img");
-  imgElement.src = flavor.image;
-  imgElement.alt = flavor.name;
-  flavorElement.appendChild(imgElement);
-  return flavorElement;
   const flavorElement = document.createElement("div");
   const imgElement = document.createElement("img");
   imgElement.src = flavor.image;
@@ -205,7 +171,9 @@ function authenticateUser(accessCode) {
     },
     body: JSON.stringify({ accessCode }),
   })
-    .then((response) => response.json())
+    .then((response) => {
+      return response.json();
+    })
     .then((data) => {
       if (data.success) {
         isAuthenticated = true;

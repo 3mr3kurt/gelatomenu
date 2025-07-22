@@ -68,6 +68,7 @@ app.post("/title", async (req, res) => {
 app.post("/auth", (req, res) => {
   const { accessCode } = req.body;
   const correctCode = process.env.ACCESS_CODE;
+
   if (accessCode === correctCode) {
     res.json({ success: true, message: "Authentication successful" });
   } else {
