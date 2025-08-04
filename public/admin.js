@@ -87,23 +87,6 @@ function toggleFlavor(flavorName) {
       }
     })
     .catch((err) => console.error(err));
-  fetch("/flavors", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ flavor: flavorName }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        loadCurrentFlavors();
-        alert(`Flavor ${data.action}`);
-      } else {
-        alert(data.message);
-      }
-    })
-    .catch((err) => console.error(err));
 }
 
 function loadCurrentFlavors() {
