@@ -56,6 +56,15 @@ document.addEventListener("DOMContentLoaded", function () {
       updateTitle(newTitle);
     }
   }
+
+  document.querySelectorAll('#admin-tab-bar .tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('#admin-tab-bar .tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelectorAll('#admin-menu-container .flavor-section').forEach(s => s.classList.remove('active'));
+      document.getElementById(tab.dataset.target).classList.add('active');
+    });
+  });
 });
 
 function loadFlavorOptions() {
