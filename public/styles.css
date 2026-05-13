@@ -226,31 +226,28 @@ h1 {
 .admin-flavor-card .remove-overlay {
     position: absolute;
     inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(220, 38, 38, 0);
     border-radius: 4px;
     opacity: 0;
+    color: #fff;
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
     transition: opacity 0.15s ease, background 0.15s ease;
     pointer-events: none;
 }
 
-.admin-flavor-card:hover .remove-overlay {
-    background: rgba(220, 38, 38, 0.25);
+.admin-flavor-card.pending .remove-overlay {
+    background: rgba(220, 38, 38, 0.75);
     opacity: 1;
-}
-
-.admin-flavor-card.holding .remove-overlay {
-    opacity: 1;
-    animation: hold-fill 0.6s linear forwards;
 }
 
 .admin-flavor-card.confirmed .remove-overlay {
-    background: rgba(220, 38, 38, 0.9);
+    background: rgba(220, 38, 38, 0.95);
     opacity: 1;
-}
-
-@keyframes hold-fill {
-    from { background: rgba(220, 38, 38, 0.15); }
-    to   { background: rgba(220, 38, 38, 0.85); }
 }
 
 /* ── Admin: two-section split layout ── */
@@ -379,12 +376,12 @@ h1 {
         background: rgba(0, 0, 0, 0.05);
     }
 
-    /* Only the active section is visible */
-    .flavor-section {
+    /* Only the active section is visible (public menu only) */
+    #menu-container .flavor-section {
         display: none;
     }
 
-    .flavor-section.active {
+    #menu-container .flavor-section.active {
         display: flex;
         flex: 1;
         min-height: 0;

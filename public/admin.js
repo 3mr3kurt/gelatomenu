@@ -1,5 +1,9 @@
 let isAuthenticated = false;
 
+document.addEventListener("click", () => {
+  document.querySelectorAll(".admin-flavor-card.pending").forEach(c => c.classList.remove("pending"));
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   const authSection = document.getElementById("auth-section");
   const adminPanel = document.getElementById("admin-panel");
@@ -123,31 +127,20 @@ function createFlavorElement(flavor) {
 
   const overlay = document.createElement("div");
   overlay.classList.add("remove-overlay");
+  overlay.textContent = "tap to remove";
   el.appendChild(overlay);
 
-  let holdTimer = null;
-
-  el.addEventListener("pointerdown", (e) => {
-    el.setPointerCapture(e.pointerId);
-    el.classList.add("holding");
-    holdTimer = setTimeout(() => {
-      holdTimer = null;
-      el.classList.remove("holding");
+  el.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (el.classList.contains("pending")) {
+      el.classList.remove("pending");
       el.classList.add("confirmed");
       setTimeout(() => toggleFlavor(flavor.name), 200);
-    }, 600);
-  });
-
-  function cancel() {
-    if (holdTimer) {
-      clearTimeout(holdTimer);
-      holdTimer = null;
-      el.classList.remove("holding");
+    } else {
+      document.querySelectorAll(".admin-flavor-card.pending").forEach(c => c.classList.remove("pending"));
+      el.classList.add("pending");
     }
-  }
-
-  el.addEventListener("pointerup", cancel);
-  el.addEventListener("pointercancel", cancel);
+  });
 
   return el;
 }
