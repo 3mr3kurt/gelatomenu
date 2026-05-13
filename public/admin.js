@@ -6,34 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
   const authSubmit = document.getElementById("auth-submit");
   const flavorInput = document.getElementById("flavor-input");
   const flavorSubmit = document.getElementById("flavor-submit");
+  const titleInput = document.getElementById("title-input");
+  const titleSubmit = document.getElementById("title-submit");
 
   authSubmit.addEventListener("click", function () {
     const authCode = document.getElementById("auth-code").value;
-
-    // Verify access code with server
-    fetch("/admin/verify", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ code: authCode }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          isAuthenticated = true;
-          authSection.style.display = "none";
-          adminPanel.style.display = "flex";
-          loadFlavorOptions();
-          loadCurrentFlavors();
-        } else {
-          alert("Incorrect access code");
-        }
-      })
-      .catch((err) => {
-        console.error("Authentication error:", err);
-        alert("Authentication failed");
-      });
+    authenticateUser(authCode);
   });
 
   flavorInput.addEventListener("keydown", function (event) {
@@ -48,12 +26,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  titleInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" && isAuthenticated) {
+      handleTitleSubmission();
+    }
+  });
+
+  titleSubmit.addEventListener("click", function () {
+    if (isAuthenticated) {
+      handleTitleSubmission();
+    }
+  });
+
   function handleFlavorSubmission() {
     const flavorName = flavorInput.value.trim().toLowerCase();
     if (flavorName) {
       toggleFlavor(flavorName);
     }
     flavorInput.value = ""; // clear the input field
+  }
+
+  function handleTitleSubmission() {
+    const newTitle = titleInput.value.trim();
+    if (newTitle) {
+      updateTitle(newTitle);
+    }
   }
 });
 
@@ -153,4 +150,67 @@ function createFlavorElement(flavor) {
   el.addEventListener("pointercancel", cancel);
 
   return el;
+}
+
+function loadCurrentTitle() {
+  fetch("/title")
+    .then((response) => response.json())
+    .then((data) => {
+      const titleInput = document.getElementById("title-input");
+      titleInput.value = data.title;
+    })
+    .catch((err) => console.error("Error loading title:", err));
+}
+
+function updateTitle(newTitle) {
+  fetch("/title", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ title: newTitle }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        alert("Title updated successfully!");
+      } else {
+        alert(data.message || "Error updating title");
+      }
+    })
+    .catch((err) => {
+      console.error("Error updating title:", err);
+      alert("Error updating title");
+    });
+}
+
+
+
+function authenticateUser(accessCode) {
+  fetch("/auth", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ accessCode }),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        isAuthenticated = true;
+        document.getElementById("auth-section").style.display = "none";
+        document.getElementById("admin-panel").style.display = "flex";
+        loadFlavorOptions();
+        loadCurrentFlavors();
+        loadCurrentTitle();
+      } else {
+        alert("Incorrect access code");
+      }
+    })
+    .catch((err) => {
+      console.error("Authentication error:", err);
+      alert("Authentication failed. Please try again.");
+    });
 }
