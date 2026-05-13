@@ -96,21 +96,61 @@ function loadCurrentFlavors() {
   fetch("/flavors")
     .then((response) => response.json())
     .then((flavors) => {
-      const menu = document.getElementById("icecream-menu");
-      menu.innerHTML = "";
-      flavors.forEach((flavor) => {
-        const flavorElement = createFlavorElement(flavor);
-        menu.appendChild(flavorElement);
-      });
+      const gelatos = flavors
+        .filter((f) => !f.name.toLowerCase().includes("sorbet"))
+        .sort((a, b) => a.name.localeCompare(b.name));
+      const sorbets = flavors
+        .filter((f) => f.name.toLowerCase().includes("sorbet"))
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      const gelatoMenu = document.getElementById("admin-gelato-menu");
+      const sorbetMenu = document.getElementById("admin-sorbet-menu");
+
+      gelatoMenu.innerHTML = "";
+      sorbetMenu.innerHTML = "";
+
+      gelatos.forEach((f) => gelatoMenu.appendChild(createFlavorElement(f)));
+      sorbets.forEach((f) => sorbetMenu.appendChild(createFlavorElement(f)));
     })
     .catch((err) => console.error(err));
 }
 
 function createFlavorElement(flavor) {
-  const flavorElement = document.createElement("div");
-  const imgElement = document.createElement("img");
-  imgElement.src = flavor.image;
-  imgElement.alt = flavor.name;
-  flavorElement.appendChild(imgElement);
-  return flavorElement;
+  const el = document.createElement("div");
+  el.classList.add("admin-flavor-card");
+
+  const img = document.createElement("img");
+  img.src = flavor.image;
+  img.alt = flavor.name;
+  el.appendChild(img);
+
+  const overlay = document.createElement("div");
+  overlay.classList.add("remove-overlay");
+  el.appendChild(overlay);
+
+  let holdTimer = null;
+
+  el.addEventListener("pointerdown", (e) => {
+    el.setPointerCapture(e.pointerId);
+    el.classList.add("holding");
+    holdTimer = setTimeout(() => {
+      holdTimer = null;
+      el.classList.remove("holding");
+      el.classList.add("confirmed");
+      setTimeout(() => toggleFlavor(flavor.name), 200);
+    }, 600);
+  });
+
+  function cancel() {
+    if (holdTimer) {
+      clearTimeout(holdTimer);
+      holdTimer = null;
+      el.classList.remove("holding");
+    }
+  }
+
+  el.addEventListener("pointerup", cancel);
+  el.addEventListener("pointercancel", cancel);
+
+  return el;
 }

@@ -7,7 +7,20 @@
 </head>
 <body>
   <h1>Current Flavors</h1>
-  <div id="icecream-menu"></div>
+  <div id="tab-bar">
+    <button class="tab active" data-target="gelato-section">Gelatos</button>
+    <button class="tab" data-target="sorbet-section">Sorbets</button>
+  </div>
+  <div id="menu-container">
+    <div class="flavor-section active" id="gelato-section">
+      <h2 class="section-header">Gelatos</h2>
+      <div class="flavor-grid" id="gelato-menu"></div>
+    </div>
+    <div class="flavor-section" id="sorbet-section">
+      <h2 class="section-header">Sorbets</h2>
+      <div class="flavor-grid" id="sorbet-menu"></div>
+    </div>
+  </div>
   <script src="menu.js"></script>
 </body>
 </html>

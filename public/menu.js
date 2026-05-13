@@ -1,7 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadCurrentFlavors();
-    // Set up polling to check for menu updates every 5 seconds
     setInterval(checkForMenuUpdates, 3000);
+
+    document.querySelectorAll('#tab-bar .tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('#tab-bar .tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            document.querySelectorAll('.flavor-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(tab.dataset.target).classList.add('active');
+        });
+    });
 });
 
 // Store the current flavors to detect changes
@@ -48,12 +56,19 @@ function loadCurrentFlavors() {
 }
 
 function updateMenuDisplay(flavors) {
-    const menu = document.getElementById('icecream-menu');
-    menu.innerHTML = ''; // Clear current flavors
-    flavors.forEach(flavor => {
-        const flavorElement = createFlavorElement(flavor);
-        menu.appendChild(flavorElement);
-    });
+    const gelatos = flavors.filter(f => !f.name.toLowerCase().includes('sorbet'))
+        .sort((a, b) => a.name.localeCompare(b.name));
+    const sorbets = flavors.filter(f => f.name.toLowerCase().includes('sorbet'))
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+    const gelatoMenu = document.getElementById('gelato-menu');
+    const sorbetMenu = document.getElementById('sorbet-menu');
+
+    gelatoMenu.innerHTML = '';
+    sorbetMenu.innerHTML = '';
+
+    gelatos.forEach(flavor => gelatoMenu.appendChild(createFlavorElement(flavor)));
+    sorbets.forEach(flavor => sorbetMenu.appendChild(createFlavorElement(flavor)));
 }
 
 function createFlavorElement(flavor) {
